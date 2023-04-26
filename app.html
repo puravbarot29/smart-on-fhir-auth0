@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FHIR Starter</title>
+    
+    <meta http-equiv="refresh" content="490">
+
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+
+    <script src="js/jquery.js"></script>
+    <script src="js/underscore.js"></script>
+    <script src="js/moment.js"></script>
+    <!-- most important is fhir-client -->
+    <!-- it is at https://github.com/smart-on-fhir/client-js -->
+    <script src="js/fhir-client.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+      
+      html {box-sizing: border-box;}
+      *, *:before, *:after {box-sizing: inherit;}
+
+    </style>
+
+
+  </head>
+  <body>
+
+  <table id="main" class="table"></table>
+
+<script>
+
+
+var myApp = {}
+myApp.data = {}
+myApp.data.observations = {}
+
+
+$(document).ready(function(){
+
+  getFHIR()
+
+})
+
+
+
+function getFHIR(){
+    FHIR.oauth2.ready(function (fhirClient) {
+        myApp.smart = fhirClient;
+        getAllFHIR()
+      }, function(data){ alert(JSON.stringify(data)) })
+}
+
+function getAllFHIR(){
+       
+       $("#main").html("<div class='alert alert-info'>Getting your observations/tests, please be patient</div>")
+
+       $.when( myApp.smart.patient.api.search({type: "Observation", query:{limit:100}}) )
+        .then(function (data) {
+
+            myApp.data.observations = data
+            render() 
+
+        }, function(error){ 
+          alert("To protect your information, you are autologged out every 10 minutes.  Please login again."); 
+          window.location = "index.html"
+        })
+
+}
+
+
+function render(){
+  
+  $("#main").html("<div class='alert alert-success'>Got your medical history, now processing ...</div>")
+
+  var toInsert = []
+
+  _.each(myApp.data.observations.data.entry, function(val,index){
+
+    if (val.resource.valueQuantity){
+      console.log(val)
+      toInsert.push("<tr><td>"+val.resource.code.text+"</td><td>"+val.resource.valueQuantity.value+" "+val.resource.valueQuantity.unit+"</td><td>"+val.resource.issued+"</td></tr>")
+    }
+
+     if (val.resource.valueCodeableConcept){
+      console.log(val)
+      toInsert.push("<tr><td>"+val.resource.code.text+"</td><td>"+val.resource.valueCodeableConcept.text+"</td><td>"+val.resource.issued+"</td></tr>")
+    }  
+
+  })
+
+
+  $("#main").html( toInsert.join("") )
+}
+
+
+  
+    </script>
+
+
+
+  </body>
+</html>

@@ -1,41 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
+<!--
+
+Register for a Cerner sandbox account at:
+http://fhir.cerner.com/millennium/dstu2/ -> code Console
+
+1. create a repl.it account and fork this repo
+2. register an app in the code Console
+  - when registering, make sure to have patient scope and patient/Observation checked
+  - replace https://ResponsibleDecentVideogames--maloykr.repl.co in launch uri and redirect uri with your own
+3. in the launch.html 
+  - replace clientId with your clientId 
+  - replace redirect uri with your redirect uri
+
+Test patients in that sandbox are described at 
+https://groups.google.com/forum/#!topic/cerner-fhir-developers/edPUbVPIag0
+
+
+Different EHRs to register your app at
+https://fhir.cerner.com/millennium/dstu2/
+https://open.epic.com
+https://developer.allscripts.com
+https://dev.smarthealthit.org/
+
+-->
+
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel='stylesheet' type='text/css' href='./src/css/example-smart-app.css'>
-    <!--
-      Temporarily disable cerner-smart-embeddable-lib
-    <link rel='stylesheet' type='text/css' href='./lib/css/cerner-smart-embeddable-lib-1.0.0.min.css'>
-    -->
-    
-    <title>Example-SMART-App</title>
-  </head>
-  <body>
-    <!-- Required JS files to enable this page to embed within an MPage -->
-    <!--
-      Temporarily disable cerner-smart-embeddable-lib
-      <script src='https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js'></script>
-      <script src='./lib/js/cerner-smart-embeddable-lib-1.0.0.min.js'></script>
-    -->        
+    <title>FHIR Starter</title>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 
-    <!-- FHIR Client JS Library -->
-    <script src='./lib/js/fhir-client-v0.1.12.js'></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/underscore.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/jwt-decode.js"></script>
 
-    <!-- Prevent session bleed caused by single threaded embedded browser and sessionStorage API -->
-    <!-- https://github.com/cerner/fhir-client-cerner-additions -->
-    <script src='./lib/js/fhir-client-cerner-additions-1.0.0.js'></script>
-    <script>
-      // Making a call to the FHIR authorization server
-      FHIR.oauth2.authorize({
-        'client_id': '919c3f0e-ef09-4cff-b152-adfd22453a5c',
-        'scope':  'patient/Patient.read patient/Observation.read launch online_access openid profile'
-      });
-    </script>
-    <div class="spinner">
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
+    <link rel="stylesheet" href="css/bootstrap.min.css">     
+    <link rel="stylesheet" href="css/main.css">     
+           
+
+</head>
+
+
+<body class="text-center">
+
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand"></h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link" href="#">Privacy</a>
+            <a class="nav-link" href="#">Terms</a>
+          </nav>
+        </div>
+      </header>
+
+      <main role="main" class="inner cover">
+
+
+        <h1 class="cover-heading">FHIR</h1>
+        <p class="lead"><br/>Login with a fake patient facing username and password to try something cool out.  <br/><br/>You may need to pop this out into a new window to work as I don't think FHIR likes being embedded in iframes.<br><br></p>
+        <p class="lead">
+          <button class="btn btn-warning btn-large" id="login">Login with the Cerner Sandbox</button>
+        </p>
+      </main>
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p></p>
+        </div>
+      </footer>
     </div>
+
+
+
+<script>
+
+
+var myApp = {}
+
+myApp.data = {}
+
+
+$(document).ready(function(){
+
+    $("body").on("click", "#login", function(){
+        startAuthWorkflow()
+    })
+
+})
+
+
+function startAuthWorkflow(){
+
+    var iss = "https://fhir-myrecord.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca"
+    localStorage["iss"] = iss
+    window.location ="launch.html?iss="+iss+"&aud="
+
+}
+
+
+     </script>
+
+
   </body>
 </html>
