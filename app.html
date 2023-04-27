@@ -12,6 +12,7 @@
     <script src="js/jquery.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/moment.js"></script>
+    <script src="fhirAtlas.js"></script>
     <!-- most important is fhir-client -->
     <!-- it is at https://github.com/smart-on-fhir/client-js -->
     <script src="js/fhir-client.js"></script>
@@ -59,7 +60,7 @@ function getAllFHIR(){
        
        $("#main").html("<div class='alert alert-info'>Getting your observations/tests, please be patient</div>")
 
-       $.when( myApp.smart.patient.api.search({type: "Observation", query:{limit:100}}) )
+       $.when( myApp.smart.patient.api.fetchAll({type: "Observation", query:{limit:300}}) )
         .then(function (data) {
 
             myApp.data.observations = data
