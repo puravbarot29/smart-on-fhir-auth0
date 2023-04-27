@@ -61,10 +61,10 @@ https://dev.smarthealthit.org/
       <main role="main" class="inner cover">
 
 
-        <h1 class="cover-heading">FHIR</h1>
-        <p class="lead"><br/>Login with a fake patient facing username and password to try something cool out.  <br/><br/>You may need to pop this out into a new window to work as I don't think FHIR likes being embedded in iframes.<br><br></p>
+        <h1 class="cover-heading">FHIR - Auth0 Login Example</h1>
+
         <p class="lead">
-          <button class="btn btn-warning btn-large" id="login">Login with the Cerner Sandbox</button>
+          <button class="btn btn-warning btn-large" id="login">Login with the Auth0</button>
         </p>
       </main>
 
@@ -87,14 +87,15 @@ myApp.data = {}
 
 $(document).ready(function(){
 
+//login button function
     $("body").on("click", "#login", function(){
-        startAuthWorkflow()
+        startAuth0Workflow()
     })
 
 })
 
 
-function startAuthWorkflow(){
+function startAuth0Workflow(){
 
     var iss = "https://fhir-myrecord.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca"
     localStorage["iss"] = iss
