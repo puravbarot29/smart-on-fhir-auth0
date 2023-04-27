@@ -36,6 +36,7 @@ https://dev.smarthealthit.org/
     <script src="js/underscore.js"></script>
     <script src="js/moment.js"></script>
     <script src="js/jwt-decode.js"></script>
+    <script src="js/fhirAtlas.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">     
     <link rel="stylesheet" href="css/main.css">     
@@ -96,7 +97,7 @@ $(document).ready(function(){
 
 function startAuthWorkflow(){
 
-    var iss = "https://fhir-open.cerner.com/dstu2/ec2458f2-1e24-41c8-b71b-0e701af7583d/Patient/12724065"
+    var iss = "https://launch.smarthealthit.org/v/r4/fhir/Observation?limit=300&patient=b218cee9-019d-47a4-b161-e97c0fd6f736"
     localStorage["iss"] = iss
     window.location ="launch.html?iss="+iss+"&aud="
 
